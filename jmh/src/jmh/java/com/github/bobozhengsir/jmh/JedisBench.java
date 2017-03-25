@@ -30,7 +30,7 @@ public class JedisBench {
     public void init() {
         GenericObjectPoolConfig config = new GenericObjectPoolConfig();
         config.setMaxIdle(512);
-        jedisPool = new JedisPool(config, "10.0.0.206", 6396, 2000, null,1);
+        jedisPool = new JedisPool(config, "127.0.0.1", 6380, 2000, null,0);
         jedis = jedisPool.getResource();
     }
 
