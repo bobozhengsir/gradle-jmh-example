@@ -9,7 +9,7 @@ apply from: 'dependencies.gradle'
 allprojects {
     apply plugin: 'com.github.hierynomus.license'
     license {
-        header = rootProject.file('LICENSE')
+        header = rootProject.file('HEADER')
         strictCheck = true
         ignoreFailures = true
         mapping {
