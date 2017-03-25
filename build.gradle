@@ -1,0 +1,99 @@
+plugins {
+    id "me.champeau.gradle.jmh" version "0.3.1"
+    id "com.github.hierynomus.license" version "0.13.1"
+}
+
+apply plugin: 'idea'
+apply from: 'dependencies.gradle'
+
+allprojects {
+    apply plugin: 'com.github.hierynomus.license'
+    license {
+        header = rootProject.file('LICENSE')
+        strictCheck = true
+        ignoreFailures = true
+        mapping {
+            java   = 'SLASHSTAR_STYLE'
+        }
+        ext.year = '2016-2017'
+        exclude '**/build/*'
+        exclude '**/.gradle/*'
+    }
+
+
+    repositories {
+        mavenLocal()
+        /*
+        maven {
+            url "" // you can use other maven website.
+        }*/
+        mavenCentral()
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'maven'
+
+    sourceCompatibility = JavaVersion.VERSION_1_7
+
+    /*
+    repositories {
+    }*/
+
+    dependencies {
+        testCompile libraries.'junit'
+    }
+
+    group = 'com.github.bobozhengsir'
+    version = '1.0-SNAPSHOT'
+
+    jar {
+        manifest.attributes provider: 'gradle'
+    }
+}
+
+/*
+project(':share') {
+
+}
+*/
+
+project(':jmh') {
+    /*
+    buildscript {
+        repositories {
+            jcenter()
+            maven {
+                url "https://plugins.gradle.org/m2/"
+            }
+        }
+        dependencies {
+            classpath "me.champeau.gradle:jmh-gradle-plugin:0.3.1"
+        }
+    }*/
+
+    apply plugin: "me.champeau.gradle.jmh"
+
+    dependencies {
+        jmh libraries.'jedis'
+        /*
+        jmh (libraries.'jedis') {
+            exclude group: 'org.slf4j'
+        }*/
+        jmh project(':share')
+    }
+
+    jmh {
+        jvm = '/usr/lib/jvm/java-7-oracle/bin/java'
+        exclude = 'JedisBench\\.pow'
+        iterations = 10 // Number of measurement iterations to do.
+        benchmarkMode = ['all'] // Benchmark mode. Available modes are: [Throughput/thrpt, AverageTime/avgt, SampleTime/sample, SingleShotTime/ss, All/all]
+        batchSize = 1 // Batch size: number of benchmark method calls per operation. (some benchmark modes can ignore this setting)
+        fork = 2 // How many times to forks a single benchmark. Use 0 to disable forking altogether
+        failOnError = false // Should JMH fail immediately if any benchmark had experienced the unrecoverable error?
+        forceGC = false // Should JMH force GC between iterations?
+        jmhVersion = versions.'jmh' // Specifies JMH version
+    }
+
+}

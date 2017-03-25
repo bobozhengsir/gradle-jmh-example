@@ -1,0 +1,12 @@
+// Global config
+
+ext.versions = [
+        jmh: '1.18'
+]
+
+ext.libraries = [
+        "junit": "junit:junit:4.11",
+        "jedis": "redis.clients:jedis:2.5.2",
+        "jmh-core": "org.openjdk.jmh:jmh-core:${versions.jmh}",
+        "jmh-generator": "org.openjdk.jmh:jmh-generator-annprocess:${versions.jmh}",
+]
